@@ -103,7 +103,7 @@ def go_to_homepage():
 def show_help_page():
     # Initialize the help window
     help_window = tk.Tk()
-    help_window.title("Help Page")
+    help_window.title("Help and Instructions")
     help_window.geometry("1024x600")
 
     # Title Label
