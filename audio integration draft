@@ -1,0 +1,50 @@
+# to start, must test the connectivity of the microphone with UI: 
+# capture audio from the microphone, then display on the screen (textbox on page 2)
+
+import speech_recognition as sr
+
+def capture_audio():
+    recognizer = sr.Recognizer()
+    
+    with sr.Microphone() as source:
+        status_label.config(text="Listening")  # Update UI
+        root.update()
+        
+        recognizer.adjust_for_ambient_noise(source)
+        audio = recognizer.listen(source)
+    
+    try:
+        text = recognizer.recognize_google(audio)  # convert speech to text
+        result_label.config(text="Output: " + text)  # update UI with user's input
+    except sr.UnknownValueError:
+        result_label.config(text="cannot understand audio") # error messags
+    except sr.RequestError:
+        result_label.config(text="internet connection error")
+
+
+
+
+
+# sending the transcribed text to the LLM for translation
+
+import requests  
+
+def translate_text(text, target_language="es"):  
+    """Sends transcribed text to the LLM for translation."""  
+    url = "http://localhost:5000/translate"  # replace with actual LLM server endpoint  
+    payload = {  
+        "text": text,  
+        "target_language": target_language  
+    }  
+
+    try:  
+        response = requests.post(url, json=payload)  # ends the text to the LLM for translation.
+        response.raise_for_status()  # show error if the request fails  
+
+        translated_text = response.json().get("translated_text", "Translation failed")  
+        return translated_text  
+
+    except requests.exceptions.RequestException as e:  
+        print(f"Error connecting to LLM: {e}")  
+        return "Translation error"  
+
