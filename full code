@@ -1,13 +1,14 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox # view-only textbox for translation page
 
-#HOMEPAGE HOMEPAGE HOMEPAGE HOMEPAGE
+# HOMEPAGE HOMEPAGE HOMEPAGE HOMEPAGE
+# displays the first page for language selection
 
 def show_homepage():
 root = tk.Tk()
 root.title("ENLACE")
 root.geometry("1024x600")  # window size for the 10.1 inch screen
-root.configure(bg="white") # background color
+root.configure(bg="beige") # background color
 selected_language = tk.StringVar(value="")   # variable to store selected language
 logo_image = tk.PhotoImage(file="logo.png") # loading logo image (**make sure to change to the actual file name)
 
@@ -15,14 +16,13 @@ logo_image = tk.PhotoImage(file="logo.png") # loading logo image (**make sure to
 logo_label = tk.Label(root, image=logo_image, bg="white")
 logo_label.pack(pady=20)  # adding space below logo
 
-welcome_label = tk.Label(root, text="WELCOME! ENLACE real-time translation", 
-font=("Arial", 20, "bold"), bg="white")
+welcome_label = tk.Label(root, text="WELCOME! ENLACE real-time translation", font=("Arial", 20, "bold"), bg="white")
 welcome_label.pack(pady=10)
 
 # language selection (Spanish to English, English to Spanish) and a function to store the selected language
 def select_language(language):
     selected_language.set(language)
-    print(f"Selected Language: {selected_language.get()}")  # Debugging output
+    print(f"Selected Language: {selected_language.get()}")  # used for debugging output
 
 spanish_button = tk.Button(root, text="Spanish to English", font=("Arial", 16),
                            command=lambda: select_language("spanish_to_english"), width=20, height=2)
@@ -36,7 +36,7 @@ english_button.pack(pady=10)
 warning_label = tk.Label(root, text="", fg="red", bg="white")
 warning_label.pack(pady=10)
 
-# next button (navigates to next screen)
+# function for navigating to 2nd screen
 def go_to_next_page():
     if selected_language.get():  
         root.destroy() 
@@ -44,58 +44,59 @@ def go_to_next_page():
 else:
         warning_label.config(text="Please select a language", fg="red")
 
+# next button
 next_button = tk.Button(root, text="Next", font=("Arial", 16, "bold"), 
                         bg="white", fg="black", command=go_to_next_page, width=10, height=2)
 next_button.pack(pady=30)
 
 
-# Run the application
+# run the homepage window application
 root.mainloop()
 
 
 #TRANSLATION PAGE TRANSLATION PAGE TRANSLATION PAGE TRANSLATION PAGE 
 def show_translation_page():
-    # Initialize the translation window
+    # initialize the translation window
     translation_window = tk.Tk()
     translation_window.title("ENLACE Translation")
     translation_window.geometry("1024x600")
 
-# "Ready to Start?" Label
+# "Ready to Start?" label
     ready_label = tk.Label(translation_window, text="Ready to Start?", font=("Arial", 24))
     ready_label.place(relx=0.5, rely=0.1, anchor="center")
 
-# Read-Only Textbox for Translation
+# View-only textbox for translation output
     translation_box = tk.Text(translation_window, height=10, width=80, state=tk.DISABLED, wrap=tk.WORD, font=("Arial", 14))
     translation_box.place(relx=0.5, rely=0.5, anchor="center")
 
-# Enable/Disable Translation Textbox
+# updating translation textbox
     def update_translation_box(text):
         translation_box.config(state=tk.NORMAL)
         translation_box.insert(tk.END, text + "\n")
         translation_box.config(state=tk.DISABLED)
 
 def start_translation():
-    translation_box.insert(tk.END, "Translating...\n")
+    translation_box.insert(tk.END, "Translating...\n") # uses update function
 
 def stop_translation():
-    translation_box.insert(tk.END, "Translation Stopped.\n")
+    translation_box.insert(tk.END, "Translation Stopped\n")
 
 def go_to_homepage():
     translation_window.destroy()
-    show_homepage()  # Go back to the homepage
+    show_homepage()  # returning to the homepage
 
- # Buttons on Translation Page
+ # Buttons on translation page
     start_button = tk.Button(translation_window, text="Start", command=start_translation)
     start_button.place(relx=0.9, rely=0.9, anchor="se")
 
     stop_button = tk.Button(translation_window, text="Stop", command=stop_translation)
     stop_button.place(relx=0.1, rely=0.9, anchor="sw")
 
-    # Arrow Symbol to Go Back
+    # arrow symbol to go back
     arrow_button = tk.Button(translation_window, text="<", font=("Arial", 20), command=go_to_homepage)
     arrow_button.place(relx=0.05, rely=0.05, anchor="nw")
 
-    # Run the translation window
+    # running the translation window
     translation_window.mainloop()
 
 # HELP PAGE HELP PAGE HELP PAGE HELP PAGE HELP PAGE HELP PAGE 
@@ -107,29 +108,29 @@ def show_help_page():
     help_window.geometry("1024x600")
 
     # Title Label
-    help_title = tk.Label(help_window, text="Help Page", font=("Arial", 24))
+    help_title = tk.Label(help_window, text="Help Page", font=("Cambri", 20))
     help_title.pack(pady=20)
 
     # Help Text
     help_text = """Help Page
 
 Instructions:
-1. Select your desired translation direction (Spanish to English or English to Spanish).
+1. Select a translation (Spanish to English or English to Spanish), then go to the next page.
 2. Click 'Start Translation' to begin.
 3. Click 'Stop Translation' to end the session.
-4. Use the 'Back' button to return to the homepage or previous screens.
+4. Use the back arrow to return to the homepage or previous screens.
 
-If you encounter any issues, restart the application or check the microphone connection."""
+For any issues, please restart the device or check the microphone connection."""
 
-    help_box = tk.Text(help_window, wrap=tk.WORD, font=("Arial", 14), width=90, height=20)
+    help_box = tk.Text(help_window, wrap=tk.WORD, font=("Cambri", 14), width=90, height=20)
     help_box.insert(tk.END, help_text)
     help_box.config(state=tk.DISABLED)
     help_box.pack(padx=20, pady=20)
 
-    # Back Arrow Button
+    # back arrow function and button label to translation page
     def go_back_to_translation():
         help_window.destroy()
-        show_translation_page()  # Go back to the translation page
+        show_translation_page()
 
     back_arrow = tk.Button(help_window, text="←", font=("Arial", 20), command=go_back_to_translation)
     back_arrow.place(relx=0.05, rely=0.05, anchor="nw")
@@ -138,5 +139,6 @@ If you encounter any issues, restart the application or check the microphone con
     help_window.mainloop()
 
 
-# RUN THE HOMEPAGE FIRST
-show_homepage()  # Start with the homepage
+# STARTING THE APPLICATION BY RUNNING THE HOMEPAGE
+if __name__ == "__main__":
+    show_homepage()
