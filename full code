@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
-#HOMEPAGE HOMEPAGE HOMEPAGE HOMEPAGE HOMEPAGE
+#HOMEPAGE HOMEPAGE HOMEPAGE HOMEPAGE
 
 def show_homepage():
 root = tk.Tk()
