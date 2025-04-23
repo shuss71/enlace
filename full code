@@ -1,3 +1,5 @@
+** edits to make: stop button is buggy, doesn't work. add help page in spanish
+
 # fully functioning code
 
 import tkinter as tk # GUI (graphical user interface) used for python
